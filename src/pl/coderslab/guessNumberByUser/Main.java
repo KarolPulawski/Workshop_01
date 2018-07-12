@@ -1,4 +1,4 @@
-package pl.coderslab.guessNumberByComp;
+package pl.coderslab.guessNumberByUser;
 
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //guessNumber();
+        guessNumber();
 
 ////        // test correct of bound range of generate number
 //        int num = -1;
@@ -22,7 +22,7 @@ public class Main {
      * @param upperBound
      * @return generated number from bound
      */
-    private static int generateNumber(int lowerBound, int upperBound) {
+    public static int generateNumber(int lowerBound, int upperBound) {
 
         return (int) (Math.random() * (upperBound - lowerBound + 1) + lowerBound);
     }
@@ -48,18 +48,6 @@ public class Main {
 
         return num;
     }
-
-//    /**
-//     *
-//     * @param inputNumber
-//     * @param generatedNumber
-//     * @return true if two compared numbers are equal
-//     */
-//    private static boolean compareValue(int inputNumber, int generatedNumber) {
-//
-//        if (inputNumber == generatedNumber) return true;
-//        else return false;
-//    }
 
     /**
      * display mileage and result of the game
