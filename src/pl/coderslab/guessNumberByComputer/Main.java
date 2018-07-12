@@ -6,8 +6,39 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static List<String> array = new ArrayList<>();
+
+    /**
+     * fill array with permitted answers
+     */
+    private static void fillData() {
+        array.add("Correct");
+        array.add("Too low");
+        array.add("Too high");
+    }
+
     public static void main(String[] args) {
         answerValue();
+    }
+
+    /**
+     *
+     * @return user answer
+     */
+    private static String userAnswer() {
+        Scanner scan = new Scanner(System.in);
+        String input = "";
+
+        // check if user enter proper answer
+        while(true) {
+            input = scan.nextLine();
+
+            if(array.contains(input)) {
+                break;
+            }
+        }
+        System.out.println(input);
+        return input;
     }
 
     /**
@@ -20,6 +51,9 @@ public class Main {
         return (upperBound - lowerBound) / 2 + lowerBound;
     }
 
+    /**
+     * display value to guess by computer
+     */
     private static void setNumber() {
 
         Scanner scan = new Scanner(System.in);
@@ -38,6 +72,7 @@ public class Main {
     }
 
     private static void answerValue() {
+        fillData();
 
         int counter = 1;
         setNumber();
@@ -49,35 +84,18 @@ public class Main {
         // first computer number
         int compNumber = computerInput(lowerBoundComp, upperBoundComp);
 
-        Scanner scan = new Scanner(System.in);
-        String userAnswer = "";
-
-        // collection of permitted answers
-        List<String> array = new ArrayList<>();
-        array.add("Correct");
-        array.add("Too low");
-        array.add("Too high");
+        String answerToCheck = "";
 
         System.out.println("My number is correct? :" + compNumber);
         while(true) {
-
-            // check if user enter proper answer
-            while(true) {
-                userAnswer = scan.nextLine();
-
-                if(array.contains(userAnswer)) {
-                    break;
-                }
-            }
-            System.out.println(userAnswer);
-
+            answerToCheck = userAnswer();
             // check if input computer's is correct or not
-            if(userAnswer.equals(array.get(0))) {
+            if(answerToCheck.equals(array.get(0))) {
                 System.out.println("Congratulation, computer won! It took round(s): " + counter);
                 break;
-            } else if(userAnswer.equals(array.get(1))) { // computer must input number from new range
+            } else if(answerToCheck.equals(array.get(1))) { // computer must input number from new range
                 lowerBoundComp = compNumber;
-            } else if(userAnswer.equals(array.get(2))) {
+            } else if(answerToCheck.equals(array.get(2))) {
                 upperBoundComp = compNumber;
             }
             compNumber = computerInput(lowerBoundComp, upperBoundComp);
