@@ -68,9 +68,12 @@ public class Main {
             }
         }
 
-        System.out.println("Set number is: " + number);
+        System.out.println("Your number is: " + number);
     }
 
+    /**
+     * user type answer on computer's questions
+     */
     private static void answerValue() {
         fillData();
 
@@ -81,26 +84,31 @@ public class Main {
         int lowerBoundComp = 1;
         int upperBoundComp = 1000;
 
-        // first computer number
-        int compNumber = computerInput(lowerBoundComp, upperBoundComp);
-
-        String answerToCheck = "";
-
-        System.out.println("My number is correct? :" + compNumber);
         while(true) {
+            String answerToCheck = "";
+            int compNumber = computerInput(lowerBoundComp, upperBoundComp);
+            System.out.println("Now my choice is: " + compNumber);
             answerToCheck = userAnswer();
+
             // check if input computer's is correct or not
             if(answerToCheck.equals(array.get(0))) {
                 System.out.println("Congratulation, computer won! It took round(s): " + counter);
                 break;
-            } else if(answerToCheck.equals(array.get(1))) { // computer must input number from new range
-                lowerBoundComp = compNumber;
-            } else if(answerToCheck.equals(array.get(2))) {
-                upperBoundComp = compNumber;
+            } else {
+                if (answerToCheck.equals(array.get(2))) {
+                    upperBoundComp = compNumber;
+                    counter++;
+                    continue;
+                } else {
+                    if (answerToCheck.equals(array.get(1))) {
+                        lowerBoundComp = compNumber;
+                        counter++;
+                        continue;
+                    } else {
+                        System.out.println("Do not cheat!!!");
+                    }
+                }
             }
-            compNumber = computerInput(lowerBoundComp, upperBoundComp);
-            System.out.println("Now my number is correct? " + compNumber);
-            counter++;
         }
     }
 }
