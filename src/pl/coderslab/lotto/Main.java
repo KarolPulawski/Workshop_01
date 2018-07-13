@@ -87,7 +87,6 @@ public class Main {
                 counter++;
             }
         }
-
         return counter;
     }
 
@@ -96,29 +95,37 @@ public class Main {
      */
     private static void game() {
 
-//        int winningAmount = checkWin(choiceNumbers(), rollNumbers());
-        List<Integer> array = new ArrayList<>();
-        array.add(5);
-        array.add(11);
-        array.add(23);
-        array.add(24);
-        array.add(29);
-        array.add(43);
+        int winningAmount = checkWin(choiceNumbers(), rollNumbers());
+        if (winningAmount > 2)
+            System.out.println("Congratulations! You have caught " + winningAmount + " numbers.");
+        else if (winningAmount > 0) System.out.println("Sorry you have lost, but you have caught: "
+                + winningAmount + " numbers.");
+        else System.out.println("This time you have not caught any number...");
 
-        while (true) {
-            int winningAmount = checkWin(array, rollNumbers());
-
-            if (winningAmount > 5) {
-                System.out.println("WON");
-                System.out.println(array.toString());
-                break;
-            }
-
-            if (winningAmount > 2)
-                System.out.println("Congratulations! You have caught " + winningAmount + " numbers.");
-            else if (winningAmount > 0) System.out.println("Sorry you have lost, but you have caught: "
-                    + winningAmount + " numbers.");
-            else System.out.println("This time you have not caught any number...");
-        }
+//        // test
+//        List<Integer> array = new ArrayList<>();
+//        array.add(5);
+//        array.add(11);
+//        array.add(23);
+//        array.add(24);
+//        array.add(29);
+//        array.add(43);
+//        winningAmount = checkWin(array, rollNumbers());
+//
+//        while (true) {
+//
+//
+//            if (winningAmount > 5) {
+//                System.out.println("WON");
+//                System.out.println(array.toString());
+//                break;
+//            }
+//
+//            if (winningAmount > 2)
+//                System.out.println("Congratulations! You have caught " + winningAmount + " numbers.");
+//            else if (winningAmount > 0) System.out.println("Sorry you have lost, but you have caught: "
+//                    + winningAmount + " numbers.");
+//            else System.out.println("This time you have not caught any number...");
+//        }
     }
 }
