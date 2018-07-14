@@ -15,6 +15,8 @@ import java.util.*;
 
 public class Main {
 
+    private static ArrayList<String> commonWords = new ArrayList<>();
+
     public static void main(String[] args) {
         runApp();
     }
@@ -23,6 +25,7 @@ public class Main {
      * application process
      */
     private static void runApp() {
+        fillCommonList();
         String url = "http://www.onet.pl/";
         String specificExpression = "span.title";
 
@@ -43,6 +46,30 @@ public class Main {
         String fileName = "popular_words.txt";
         System.out.println(saveToFile(fileName, sortPopularWords(connectDownload(url, specificExpression))));
 
+    }
+
+    /**
+     * Fill List with ver common words to elminate them from popular words List.
+     */
+    private static void fillCommonList() {
+        commonWords.add("oraz");
+        commonWords.add("ponieważ");
+        commonWords.add("jeżeli");
+        commonWords.add("aczkolwiek");
+        commonWords.add("pomimo");
+        commonWords.add("lecz");
+        commonWords.add("czyli");
+        commonWords.add("jest");
+        commonWords.add("dlatego");
+        commonWords.add("właśnie");
+        commonWords.add("teraz");
+        commonWords.add("odkąd");
+        commonWords.add("zaraz");
+        commonWords.add("kiedy");
+        commonWords.add("kiedyś");
+        commonWords.add("kogo");
+        commonWords.add("więc");
+        commonWords.add("akurat");
     }
 
     /**
