@@ -44,6 +44,7 @@ public class Main {
 //        for(String word : countPopularWords(sortPopularWords(connectDownload(url, specificExpression)))){
 //            System.out.println(word);
 
+        // connect, download, compare with common words, sort descending
         String fileName = "popular_words.txt";
         System.out.println(saveToFile(fileName, sortPopularWords(connectDownload(url, specificExpression))));
 
@@ -92,6 +93,24 @@ public class Main {
         commonWords.add("kogo");
         commonWords.add("więc");
         commonWords.add("akurat");
+    }
+
+    /**
+     *
+     * @param listToCompare list to compare
+     * @return List without common words from commonWords List.
+     */
+    private static List<String> compareWithCommon(List<String> listToCompare) {
+        List<String> finalList = new ArrayList<>();
+
+        for(String wordToCheck : listToCompare) {
+            if(!commonWords.contains(wordToCheck)) {
+                finalList.add(wordToCheck);
+            }
+        }
+        Collections.sort(finalList);
+        Collections.reverse(finalList);
+        return finalList;
     }
 
     /**
