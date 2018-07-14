@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,6 +47,27 @@ public class Main {
         String fileName = "popular_words.txt";
         System.out.println(saveToFile(fileName, sortPopularWords(connectDownload(url, specificExpression))));
 
+    }
+
+    /**
+     * Read all data from file.
+     * @param fileName name of file from main catalog
+     * @return List of String with all read data from file.
+     */
+    private static List<String> listFromFile(String fileName) {
+
+        List<String> list = new ArrayList<>();
+        File fileToRead = new File(fileName);
+
+        try {
+            Scanner scan = new Scanner(fileToRead);
+            while(scan.hasNextLine()) {
+                list.add(scan.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File does not exists.");
+        }
+        return list;
     }
 
     /**
