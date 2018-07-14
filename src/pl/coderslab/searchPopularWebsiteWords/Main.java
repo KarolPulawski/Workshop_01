@@ -44,10 +44,17 @@ public class Main {
 //        for(String word : countPopularWords(sortPopularWords(connectDownload(url, specificExpression)))){
 //            System.out.println(word);
 
-        // connect, download, compare with common words, sort descending
+        // connect, download, save to file
         String fileName = "popular_words.txt";
-        System.out.println(saveToFile(fileName, sortPopularWords(connectDownload(url, specificExpression))));
+        List<String> wordFromWebsite = setPopularWords(connectDownload(url, specificExpression));
+        System.out.println(saveToFile(fileName, wordFromWebsite));
 
+        // read from file, compare with common words, save to file
+        String fileNameFiltered = "filtered_popular_words.txt";
+        List<String> wordFromWebsiteFiltered = compareWithCommon(listFromFile(fileName));
+        System.out.println(saveToFile(fileNameFiltered, wordFromWebsiteFiltered));
+
+        // read from file, count the most popular, display first three
     }
 
     /**
@@ -93,10 +100,11 @@ public class Main {
         commonWords.add("kogo");
         commonWords.add("więc");
         commonWords.add("akurat");
+        commonWords.add("tylko");
     }
 
     /**
-     *
+     * Remove common words and sort them from Z to A
      * @param listToCompare list to compare
      * @return List without common words from commonWords List.
      */
@@ -176,7 +184,7 @@ public class Main {
      * @param lines List of lines downloaded from website
      * @return list of sorted words
      */
-    private static List<String> sortPopularWords(List<String> lines) {
+    private static List<String> setPopularWords(List<String> lines) {
 
         List<String> words = new ArrayList<>();
         for(String line : lines) {
@@ -190,7 +198,6 @@ public class Main {
                 }
             }
         }
-        Collections.sort(words);
         return words;
     }
 
