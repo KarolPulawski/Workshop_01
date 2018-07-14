@@ -32,6 +32,39 @@ public class Main {
 //            System.out.println(word);
 //        }
 
+        // display in console - test purpose3
+        for(String word : countPopularWords(sortPopularWords(connectDownload(url, specificExpression)))){
+            System.out.println(word);
+        }
+
+    }
+
+    /**
+     * In return List every word has a specific prefix [0000_] where number means how often every word occurred
+     * in List sortedWords.
+     * @param sortedWords
+     * @return List with descending most popular sorted words.
+     */
+    private static List<String> countPopularWords(List<String> sortedWords) {
+
+        List<String> countedWords = new ArrayList<>();
+        int counter = 1;
+
+        for (int i = 0; i < sortedWords.size() - 1; i++) {
+            // change comparated words to lowercase but only in if condition
+            if(sortedWords.get(i).toLowerCase().equals(sortedWords.get(i + 1).toLowerCase())) {
+                counter++;
+            } else {
+                String prefix = Integer.toString(counter);
+                // left padging zeros up to 4 digits
+                prefix = String.format("%04d", counter);
+                countedWords.add(prefix + "_" + sortedWords.get(i));
+                counter = 1;
+            }
+        }
+        Collections.sort(countedWords);
+        Collections.reverse(countedWords);
+        return countedWords;
     }
 
     /**
