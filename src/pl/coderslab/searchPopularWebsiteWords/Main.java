@@ -6,7 +6,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Main {
@@ -32,12 +36,44 @@ public class Main {
 //            System.out.println(word);
 //        }
 
-        // display in console - test purpose3
-        for(String word : countPopularWords(sortPopularWords(connectDownload(url, specificExpression)))){
-            System.out.println(word);
-        }
+//        // display in console - test purpose3
+//        for(String word : countPopularWords(sortPopularWords(connectDownload(url, specificExpression)))){
+//            System.out.println(word);
+
+        String fileName = "popular_words.txt";
+        System.out.println(saveToFile(fileName, sortPopularWords(connectDownload(url, specificExpression))));
 
     }
+
+    /**
+     * Input List sortedList will be written in main catalog with name fileName.
+     * @param fileName file name with extension
+     * @param sortedWords
+     * @return true if completed, false if failed
+     */
+    private static boolean saveToFile(String fileName, List<String> sortedWords) {
+
+        Path filePath = Paths.get("./" + fileName);
+
+        // check if file exists
+        if(!Files.exists(filePath)) {
+            try {
+                Files.createFile(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            Files.write(filePath, sortedWords);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("File could not be written.");
+            return false;
+        }
+    }
+
 
     /**
      * In return List every word has a specific prefix [0000_] where number means how often every word occurred
