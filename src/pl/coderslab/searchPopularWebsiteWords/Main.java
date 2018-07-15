@@ -27,8 +27,18 @@ public class Main {
      */
     private static void runApp() {
         fillCommonList();
-        String url = "http://www.onet.pl/";
-        String specificExpression = "span.title";
+
+//        // onet
+//        String url = "http://www.onet.pl/";
+//        String specificExpression = "span.title";
+
+//        // interia
+//        String url = "http://www.interia.pl/";
+//        String specificExpression = "a.tiles-a";
+
+        // wp
+        String url = "http://www.wp.pl/";
+        String specificExpression = "section#section_topnews";
 
 //        // display in console - test purpose 1
 //        for(String title : connectDownload(url, specificExpression)){
