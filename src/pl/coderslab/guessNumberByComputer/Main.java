@@ -13,8 +13,8 @@ public class Main {
      */
     private static void fillData() {
         array.add("Correct");
-        array.add("Too low");
-        array.add("Too high");
+        array.add("yes");
+        array.add("no");
     }
 
     public static void main(String[] args) {
@@ -52,59 +52,48 @@ public class Main {
     }
 
     /**
-     * display value to guess by computer
-     */
-    private static void setNumber() {
-
-        Scanner scan = new Scanner(System.in);
-        Integer number = null;
-
-        System.out.println("Please set the number: ");
-        while(number == null) {
-            try {
-                number = Integer.parseInt(scan.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter valid number!");
-            }
-        }
-
-        System.out.println("Your number is: " + number);
-    }
-
-    /**
      * user type answer on computer's questions
      */
     private static void answerValue() {
         fillData();
 
         int counter = 1;
-        setNumber();
+        System.out.println("Please think and remember number.");
 
         // begining values of computer's bound
         int lowerBoundComp = 1;
         int upperBoundComp = 1000;
 
+
+
         while(true) {
-            String answerToCheck = "";
+            //first guess
             int compNumber = computerInput(lowerBoundComp, upperBoundComp);
             System.out.println("Now my choice is: " + compNumber);
-            answerToCheck = userAnswer();
+            System.out.println("Is it correct?");
+            String answerToCheck = userAnswer();
 
-            // check if input computer's is correct or not
+            // check if input computer's is correct
             if(answerToCheck.equals(array.get(0))) {
                 System.out.println("Congratulation, computer won! It took round(s): " + counter);
                 break;
-            } else {
-                if (answerToCheck.equals(array.get(2))) {
+            } else if(answerToCheck.equals("no")) {
+
+                System.out.println("Is it too high?");
+                answerToCheck = userAnswer();
+                if (answerToCheck.equals("yes")) {
                     upperBoundComp = compNumber;
                     counter++;
                     continue;
-                } else {
-                    if (answerToCheck.equals(array.get(1))) {
+                } else if(answerToCheck.equals("no")) {
+
+                    System.out.println("Is it too low?");
+                    answerToCheck = userAnswer();
+                    if (answerToCheck.equals("yes")) {
                         lowerBoundComp = compNumber;
                         counter++;
                         continue;
-                    } else {
+                    } else if(answerToCheck.equals("no")) {
                         System.out.println("Do not cheat!!!");
                     }
                 }
