@@ -18,6 +18,8 @@ public class Main {
 
     private static ArrayList<String> commonWords = new ArrayList<>();
 
+    private static final String regexCharactersToAvoid = "[:,.\"'<>()?!/`”„{}]";
+
     public static void main(String[] args) {
         runApp();
     }
@@ -40,6 +42,8 @@ public class Main {
         String url = "http://www.wp.pl/";
         String specificExpression = "section#section_topnews";
 
+        int numberToDisplay = 5;
+
 //        // display in console - test purpose 1
 //        for(String title : connectDownload(url, specificExpression)){
 //            System.out.println(title);
@@ -57,14 +61,34 @@ public class Main {
         // connect, download, save to file
         String fileName = "popular_words.txt";
         List<String> wordFromWebsite = setPopularWords(connectDownload(url, specificExpression));
-        System.out.println(saveToFile(fileName, wordFromWebsite));
+        saveToFile(fileName, wordFromWebsite);
 
         // read from file, compare with common words, save to file
         String fileNameFiltered = "filtered_popular_words.txt";
         List<String> wordFromWebsiteFiltered = compareWithCommon(listFromFile(fileName));
-        System.out.println(saveToFile(fileNameFiltered, wordFromWebsiteFiltered));
+        saveToFile(fileNameFiltered, wordFromWebsiteFiltered);
 
-        // read from file, count the most popular, display first three
+        //count the most popular, display specific number first ones
+        List<String> countMostPopularWords = new ArrayList<>();
+        countMostPopularWords = countPopularWords(wordFromWebsiteFiltered);
+        displayTheMostPopular(countMostPopularWords, numberToDisplay);
+
+    }
+
+    /**
+     * Display specific amount the first most popular words from input list.
+     * @param listToDisplay words from this list will be displayed
+     * @param numberToDisplay specific number of displayed words
+     */
+    private static void displayTheMostPopular(List<String> listToDisplay, int numberToDisplay) {
+        for(int i = 0; i < numberToDisplay; i++) {
+            String prefixWord = listToDisplay.get(i);
+            int indexUnderscore = prefixWord.indexOf("_");
+            String prefix = prefixWord.substring(0, indexUnderscore);
+            int prefixNumber = Integer.parseInt(prefix);
+            String word = prefixWord.substring(indexUnderscore + 1);
+            System.out.printf("%-10s \t | amount: \t %-3d \n", word, prefixNumber);
+        }
     }
 
     /**
@@ -137,7 +161,7 @@ public class Main {
      * @param sortedWords
      * @return true if completed, false if failed
      */
-    private static boolean saveToFile(String fileName, List<String> sortedWords) {
+    private static void saveToFile(String fileName, List<String> sortedWords) {
 
         Path filePath = Paths.get("./" + fileName);
 
@@ -152,11 +176,10 @@ public class Main {
 
         try {
             Files.write(filePath, sortedWords);
-            return true;
+            System.out.println(fileName + " was created.");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("File could not be written.");
-            return false;
         }
     }
 
@@ -190,7 +213,8 @@ public class Main {
     }
 
     /**
-     * Every word from List lines will be separated from non alphanumeric signs.
+     * Every word from List lines will be separated from non alphanumeric signs
+     * contain in private static final regexCharactersToAvoid field.
      * @param lines List of lines downloaded from website
      * @return list of sorted words
      */
@@ -203,7 +227,7 @@ public class Main {
             while(sToken.hasMoreTokens()) {
                 String word = sToken.nextToken();
                 if(word.length() > 3) {
-                    word = word.replaceAll("[:,.\"'<>()?!/]", "");
+                    word = word.replaceAll(regexCharactersToAvoid, "");
                     words.add(word);
                 }
             }
