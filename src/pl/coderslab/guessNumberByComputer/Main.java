@@ -70,7 +70,7 @@ public class Main {
             //first guess
             int compNumber = computerInput(lowerBoundComp, upperBoundComp);
             System.out.println("Now my choice is: " + compNumber);
-            System.out.println("Is it correct?");
+            System.out.println("Is it correct? (Correct/no)");
             String answerToCheck = userAnswer();
 
             // check if input computer's is correct
@@ -79,7 +79,7 @@ public class Main {
                 break;
             } else if(answerToCheck.equals("no")) {
 
-                System.out.println("Is it too high?");
+                System.out.println("Is it too high? (yes/no)");
                 answerToCheck = userAnswer();
                 if (answerToCheck.equals("yes")) {
                     upperBoundComp = compNumber;
@@ -87,7 +87,7 @@ public class Main {
                     continue;
                 } else if(answerToCheck.equals("no")) {
 
-                    System.out.println("Is it too low?");
+                    System.out.println("Is it too low? (yes/no)");
                     answerToCheck = userAnswer();
                     if (answerToCheck.equals("yes")) {
                         lowerBoundComp = compNumber;
