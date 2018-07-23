@@ -30,49 +30,80 @@ public class Main {
     private static void runApp() {
         fillCommonList();
 
-//        // onet
-//        String url = "http://www.onet.pl/";
-//        String specificExpression = "span.title";
+        Scanner scanner = new Scanner(System.in);
+        String url = "";
+        String specificExpression = "";
 
-//        // interia
-//        String url = "http://www.interia.pl/";
-//        String specificExpression = "a.tiles-a";
+        List<Website> websites = new ArrayList<>();
+        websites.add(new Website("Onet","http://www.onet.pl/", "span.title"));
+        websites.add(new Website("Interia", "http://www.interia.pl/", "a.tiles-a"));
+        websites.add(new Website("WP", "http://www.wp.pl/", "section#section_topnews"));
 
-        // wp
-        String url = "http://www.wp.pl/";
-        String specificExpression = "section#section_topnews";
+        System.out.println("Welcome in SearchPopularWebsiteWords.");
+        System.out.println("Please type website's name from the list: ");
 
-        int numberToDisplay = 5;
+        boolean flag = true;
 
-//        // display in console - test purpose 1
-//        for(String title : connectDownload(url, specificExpression)){
-//            System.out.println(title);
-//        }
+        while(flag) {
 
-//        // display in console - test purpose 2
-//        for(String word : sortPopularWords(connectDownload(url, specificExpression))){
-//            System.out.println(word);
-//        }
+            for(Website web : websites) {
+                System.out.println("-> " + web.getName());
+            }
 
-//        // display in console - test purpose3
-//        for(String word : countPopularWords(sortPopularWords(connectDownload(url, specificExpression)))){
-//            System.out.println(word);
+            String scan = scanner.nextLine();
 
-        // connect, download, save to file
-        String fileName = "popular_words.txt";
-        List<String> wordFromWebsite = setPopularWords(connectDownload(url, specificExpression));
-        saveToFile(fileName, wordFromWebsite);
+            for (Website web : websites) {
+                if (web.getName().equals(scan)) {
+                    url = web.getUrl();
+                    specificExpression = web.getSpecificExpression();
 
-        // read from file, compare with common words, save to file
-        String fileNameFiltered = "filtered_popular_words.txt";
-        List<String> wordFromWebsiteFiltered = compareWithCommon(listFromFile(fileName));
-        saveToFile(fileNameFiltered, wordFromWebsiteFiltered);
+                    System.out.println("Plase enter the amount of words to display: ");
+                    int numberToDisplay = scanIntFromUser(scanner);
 
-        //count the most popular, display specific number first ones
-        List<String> countMostPopularWords = new ArrayList<>();
-        countMostPopularWords = countPopularWords(wordFromWebsiteFiltered);
-        displayTheMostPopular(countMostPopularWords, numberToDisplay);
+                    // connect, download, save to file
+                    String fileName = "popular_words.txt";
+                    List<String> wordFromWebsite = setPopularWords(connectDownload(url, specificExpression));
+                    saveToFile(fileName, wordFromWebsite);
 
+                    // read from file, compare with common words, save to file
+                    String fileNameFiltered = "filtered_popular_words.txt";
+                    List<String> wordFromWebsiteFiltered = compareWithCommon(listFromFile(fileName));
+                    saveToFile(fileNameFiltered, wordFromWebsiteFiltered);
+
+                    //count the most popular, display specific number first ones
+                    List<String> countMostPopularWords = countPopularWords(wordFromWebsiteFiltered);
+                    displayTheMostPopular(countMostPopularWords, numberToDisplay);
+                    break;
+
+                } else if(scan.equals("quit")) flag = false;
+            }
+
+            if(flag) System.out.println("Please enter name of website from the list or type (quit) to exit app");
+            else System.out.println("Thank You, app is closing.");
+        }
+        scanner.close();
+    }
+
+    /**
+     *
+     * @param scanner
+     * @return integer from user
+     */
+    private static int scanIntFromUser(Scanner scanner) {
+        Integer number = null;
+
+        while(number == null || number < 1) {
+            String text = scanner.nextLine();
+            try {
+                number = Integer.parseInt(text);
+                if(number < 1) {
+                    System.out.println("Please type number greater than 0");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please type valid number");
+            }
+        }
+        return number;
     }
 
     /**
@@ -81,6 +112,13 @@ public class Main {
      * @param numberToDisplay specific number of displayed words
      */
     private static void displayTheMostPopular(List<String> listToDisplay, int numberToDisplay) {
+        if(numberToDisplay > listToDisplay.size()) {
+            numberToDisplay = listToDisplay.size();
+        }
+
+        System.out.println("======================================");
+        System.out.println("First " + numberToDisplay + " most popular words: ");
+        System.out.println("--------------------------------------");
         for(int i = 0; i < numberToDisplay; i++) {
             String prefixWord = listToDisplay.get(i);
             int indexUnderscore = prefixWord.indexOf("_");
@@ -89,6 +127,7 @@ public class Main {
             String word = prefixWord.substring(indexUnderscore + 1);
             System.out.printf("%-10s \t | amount: \t %-3d \n", word, prefixNumber);
         }
+        System.out.println("--------------------------------------");
     }
 
     /**
@@ -257,5 +296,28 @@ public class Main {
         return titles;
     }
 
+    public static class Website {
+        private String name;
+        private String url;
+        private String specificExpression;
+
+        public Website(String name, String url, String specificExpression) {
+            this.name = name;
+            this.url = url;
+            this.specificExpression = specificExpression;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getSpecificExpression() {
+            return specificExpression;
+        }
+    }
 
 }
